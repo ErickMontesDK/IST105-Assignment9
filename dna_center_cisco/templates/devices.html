@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Network Devices</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: #fff;
+            padding: 2rem 3rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            min-width: 700px;
+        }
+        h2 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+        }
+        th, td {
+            padding: 0.7rem 0.5rem;
+            border-bottom: 1px solid #e0e0e0;
+            text-align: left;
+        }
+        th {
+            background: #f0f4fa;
+        }
+        .action-link {
+            color: #0070f3;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .action-link:hover {
+            text-decoration: underline;
+        }
+        
+        .message {
+            color: #c0392b;
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+        .links {
+            width: 80%;
+            min-width: 200px;
+            display: flex;
+            justify-content: space-between;
+            margin: auto;
+        }
+        .links a{
+            display: inline-block;
+            margin-top: 2rem;
+            color: #0070f3;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        #exit-link {
+            color: #e74c3c;
+        }
+        .links a {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Network Devices</h2>
+        {% if devices %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Hostname</th>
+                        <th>IP Address</th>
+                        <th>Platform</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for device in devices %}
+                    <tr>
+                        <td>{{ device.hostname }}</td>
+                        <td>{{ device.managementIpAddress }}</td>
+                        <td>{{ device.platformId }}</td>
+                        <td>{{ device.reachabilityStatus }}</td>
+                        <td>
+                            <a class="action-link" href="/interfaces/?ip={{ device.managementIpAddress }}">View Interfaces</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="message">{{ message }}</div>
+        {% endif %}
+        <div class="links">
+            <a href="/logout/" id="exit-link">&larr; Exit</a>
+            <a href="/" class="back-link">&larr; Back to Login</a>
+        </div>
+    </div>
+</body>
+</html> 

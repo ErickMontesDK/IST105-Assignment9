@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Authentication Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: #fff;
+            padding: 2rem 3rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            text-align: center;
+            min-width: 350px;
+        }
+        .icon {
+            font-size: 2.2rem;
+            vertical-align: middle;
+            margin-right: 0.5rem;
+        }
+        .token-box {
+            background: #f0f4fa;
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 1.2rem 0 1.5rem 0;
+            word-break: break-all;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.1rem;
+        }
+        .success {
+            color: #2ecc40;
+            font-weight: bold;
+            margin-top: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+        .message {
+            margin-top: 1.2rem;
+            color: #333;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 2rem;
+            color: #0070f3;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        #back_home{
+            color: crimson;
+
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .links {
+            width: 80%;
+            min-width: 200px;
+            display: flex;
+            justify-content: space-between;
+            margin: auto;
+        }
+    </style>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        {% if token %}
+        <h2><span class="icon"><i class="fa fa-key"></i></span>Authentication Token</h2>
+        <div class="token-box">{{ token }}</div>
+        <div class="success"><span class="icon"><i class="fa fa-check-square"></i></span>Authorization successful</div>
+        {% else %}
+        <h2><span class="icon"><i class="fa fa-key"></i></span>Authentication Failed</h2>
+        <div class="message">{{ message }}</div>
+        {% endif %}
+        
+        <div class="links">
+            <a href="/logout/" class="back-link" id="back_home">&larr; Exit</a>
+            {% if token %}
+            
+            <a href="/devices/" class="back-link">View Network Devices &rarr;</a>
+            {% endif %}
+
+        </div>
+    </div>
+</body>
+</html>

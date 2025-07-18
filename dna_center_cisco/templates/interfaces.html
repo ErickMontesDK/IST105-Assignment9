@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Device Interfaces</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: #fff;
+            padding: 2rem 3rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            min-width: 700px;
+        }
+        h2 {
+            text-align: center;
+        }
+        .subtitle {
+            text-align: center;
+            color: #555;
+            margin-bottom: 1.5rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+        }
+        th, td {
+            padding: 0.7rem 0.5rem;
+            border-bottom: 1px solid #e0e0e0;
+            text-align: left;
+        }
+        th {
+            background: #f0f4fa;
+        }
+        .back-link, .exit-link {
+            display: inline-block;
+            margin-top: 2rem;
+            margin-right: 1.5rem;
+            color: #0070f3;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .back-link:hover, .exit-link:hover {
+            text-decoration: underline;
+        }
+        .message {
+            color: #c0392b;
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+        .links {
+            width: 80%;
+            min-width: 200px;
+            display: flex;
+            justify-content: space-between;
+            margin: auto;
+        }
+        .links a{
+            display: inline-block;
+            margin-top: 2rem;
+            color: #0070f3;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        #exit-link {
+            color: #e74c3c;
+        }
+        .links a {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Device Interfaces</h2>
+        <div class="subtitle">Device IP: <strong>{{ device_ip }}</strong></div>
+        {% if interfaces %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Interface</th>
+                        <th>Status</th>
+                        <th>VLAN</th>
+                        <th>Speed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for intf in interfaces %}
+                    <tr>
+                        <td>{{ intf.portName }}</td>
+                        <td>{{ intf.status }}</td>
+                        <td>{{ intf.vlanId }}</td>
+                        <td>{{ intf.speed }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="message">{{ message }}</div>
+        {% endif %}
+        <div class="links">
+            <a href="/logout/" id="exit-link">&larr; Exit</a>
+            <a href="/devices" class="back-link">&larr; Back to Devices</a>
+        </div>
+    </div>
+</body>
+</html>
