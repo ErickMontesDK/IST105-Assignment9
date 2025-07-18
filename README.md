@@ -15,17 +15,15 @@ This project is a Django web application that allows you to:
 ## Installation
 1. **Clone the repository:**
    ```bash
-   git clone <REPO_URL>
-   cd <project_folder>
+   git clone https://github.com/ErickMontesDK/IST105-Assignment9.git
+   cd IST105-Assignment9
    ```
 2. **Install dependencies:**
    ```bash
    pip install -r requirements.txt
    ```
-3. **Configure DNA Center connection:**
-   - Edit `dna_center_cisco/dnac_config.py` with your DNA Center host, port, username, and password (or use the login form).
 
-4. **Apply migrations:**
+3. **Apply migrations:**
    ```bash
    python manage.py makemigrations
    python manage.py migrate
@@ -41,7 +39,6 @@ This project is a Django web application that allows you to:
 - Django
 - requests
 - pymongo
-- dnac_config (custom, included)
 
 ## Usage
 - Authenticate with your Cisco DNA Center credentials.
@@ -50,8 +47,85 @@ This project is a Django web application that allows you to:
 
 ## Notes
 - For MongoDB logging, ensure your MongoDB instance is running and configured if you want to store logs.
-- The project is ready for further extension (e.g., more endpoints, advanced logging, etc).
+
+## MongoDB Setup & Configuration
+
+### 1. Install MongoDB (Ubuntu 20.04/22.04)
+```bash
+# Import MongoDB Public GPG Key
+curl -fsSL https://pgp.mongodb.com/server-6.0.asc | \
+  sudo gpg -o /usr/share/keyrings/mongodb-server-6.0.gpg \
+  --dearmor
+
+# Create a List File for MongoDB
+echo "deb [ signed-by=/usr/share/keyrings/mongodb-server-6.0.gpg ] https://repo.mongodb.org/apt/ubuntu $(lsb_release -cs)/mongodb-org/6.0 multiverse" | \
+  sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list > /dev/null
+
+# Update Package Index
+sudo apt update
+
+# Install MongoDB
+sudo apt install -y mongodb-org
+
+# Start and Enable MongoDB
+sudo systemctl start mongod
+sudo systemctl enable mongod
+
+# Verify MongoDB is Running
+sudo systemctl status mongod
+```
+You should see `Active: active (running)`.
+
+### 2. Allow Remote Connections (Optional/Only if you need remote access)
+Edit `/etc/mongod.conf`:
+```yaml
+net:
+  port: 27017
+  bindIp: 0.0.0.0
+```
+Then restart MongoDB:
+```bash
+sudo systemctl restart mongod
+```
+
+### 3. Create a Database User
+```bash
+mongosh
+```
+In the MongoDB shell:
+```js
+use <DB_NAME>
+
+db.createUser({
+  user: "<DB_USER>",
+  pwd: "<DB_PASSWORD>",
+  roles: [{ role: "readWrite", db: "<DB_NAME>" }]
+})
+```
+You can view users with:
+```js
+show users
+```
+
+### 4. Django Integration
+Install the required packages:
+```bash
+pip install djongo pymongo
+```
+In your `settings.py`:
+```python
+DATABASES = {
+    'default': {
+        'ENGINE': 'djongo',
+        'NAME': '<DB_NAME>',
+        'CLIENT': {
+            'host': 'mongodb://<DB_USER>:<DB_PASSWORD>@<MONGO_SERVER_IP>:27017/<DB_NAME>?authSource=<DB_NAME>',
+        }
+    }
+}
+```
+Replace `<DB_USER>`, `<DB_PASSWORD>`, `<DB_NAME>`, and `<MONGO_SERVER_IP>` with your actual MongoDB credentials and server IP.
 
 ---
 
-**Author:** Erick 
+**Author:** Erick Montes Bedolla
